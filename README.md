@@ -47,4 +47,10 @@ SQLite se reconstruye con las migraciones incluidas. Ejecutar `python manage.py 
 
 ## Comprobación
 
+## CRUD e imágenes (preentrega 10)
+
+Las rutas `/post/nuevo/`, `/post/<id>/`, `/post/<id>/editar/` y `/post/<id>/eliminar/` permiten crear, leer, editar y borrar publicaciones. El borrado requiere confirmar mediante POST; abrir la página de confirmación no elimina nada. `PostForm` es un ModelForm que procesa texto e imágenes con `request.FILES` y `enctype="multipart/form-data"`.
+
+Pillow permite validar el `ImageField` opcional. Las imágenes se guardan en `media/posts/`; `MEDIA_ROOT` se apoya en `BASE_DIR` y `/media/` se sirve durante el desarrollo. La carpeta media y la base local se reconstruyen al probar y no se versionan. Para probar: crear una publicación con una imagen PNG/JPEG, abrir el detalle, editar y reemplazar la imagen, crear otra sin imagen y confirmar un borrado.
+
 Ejecutar `python manage.py check`, iniciar `python manage.py runserver` y recorrer ambas páginas desde el menú. En las herramientas del navegador, verificar que `/static/posts/css/estilos.css` responda con HTTP 200. Las rutas y el CSS deben funcionar en una instalación nueva siguiendo los pasos anteriores.

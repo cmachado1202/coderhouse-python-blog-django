@@ -10,8 +10,10 @@
 {% for post in posts %}
     <article class="tarjeta">
         <p class="etiqueta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y" }}</p>
-        <h2>{{ post.titulo }}</h2>
-        {{ post.contenido|linebreaks }}
+        <h2><a href="{% url 'posts:detalle_post' post.pk %}">{{ post.titulo }}</a></h2>
+        {% if post.imagen %}<img class="imagen-post" src="{{ post.imagen.url }}" alt="Imagen de {{ post.titulo }}">{% endif %}
+        {{ post.contenido|truncatewords:45|linebreaks }}
+        <a class="enlace" href="{% url 'posts:detalle_post' post.pk %}">Leer publicación →</a>
     </article>
 {% empty %}
     <div class="tarjeta"><h2>Todavía no hay publicaciones</h2><p>Los nuevos artículos aparecerán acá cuando estén publicados.</p></div>

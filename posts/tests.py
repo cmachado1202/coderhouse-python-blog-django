@@ -2,6 +2,11 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from .models import Post
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import override_settings
+from PIL import Image
+from io import BytesIO
+import tempfile
 
 
 class PublicacionesTests(TestCase):
@@ -29,3 +34,47 @@ class PublicacionesTests(TestCase):
     def test_listado_vacio_y_acerca(self):
         self.assertContains(self.client.get(reverse('posts:inicio')), 'Todavía no hay publicaciones')
         self.assertContains(self.client.get(reverse('posts:acerca')), 'Carolina Machado')
+
+
+class CrudTests(TestCase):
+    def setUp(self):
+        self.media = tempfile.TemporaryDirectory()
+        self.override = override_settings(MEDIA_ROOT=self.media.name)
+        self.override.enable()
+        self.addCleanup(self.override.disable)
+        self.addCleanup(self.media.cleanup)
+
+    def imagen(self, nombre='prueba.png'):
+        buffer = BytesIO()
+        Image.new('RGB', (4, 4), 'green').save(buffer, format='PNG')
+        return SimpleUploadedFile(nombre, buffer.getvalue(), content_type='image/png')
+
+    def test_crear_editar_imagen_y_borrar_con_confirmacion(self):
+        data = {'titulo': 'Post con imagen', 'contenido': 'Contenido', 'autor': 'Carolina', 'estado': 'publicado', 'imagen': self.imagen()}
+        response = self.client.post(reverse('posts:crear_post'), data)
+        post = Post.objects.get()
+        self.assertRedirects(response, reverse('posts:detalle_post', args=[post.pk]))
+        self.assertContains(self.client.get(response.url), post.imagen.url)
+        anterior = post.imagen.name
+        data['titulo'] = 'Post editado'
+        data['imagen'] = self.imagen('otra.png')
+        self.client.post(reverse('posts:editar_post', args=[post.pk]), data)
+        post.refresh_from_db()
+        self.assertEqual(post.titulo, 'Post editado')
+        self.assertNotEqual(post.imagen.name, anterior)
+        url = reverse('posts:eliminar_post', args=[post.pk])
+        self.assertContains(self.client.get(url), 'Confirmar eliminación')
+        self.assertTrue(Post.objects.filter(pk=post.pk).exists())
+        self.assertRedirects(self.client.post(url), reverse('posts:lista_posts'))
+        self.assertFalse(Post.objects.filter(pk=post.pk).exists())
+
+    def test_sin_imagen_y_formulario_invalido(self):
+        data = {'titulo': 'Sin imagen', 'contenido': 'Texto', 'autor': 'Carolina', 'estado': 'publicado'}
+        self.client.post(reverse('posts:crear_post'), data)
+        post = Post.objects.get()
+        self.assertFalse(post.imagen)
+        self.assertEqual(self.client.get(reverse('posts:detalle_post', args=[post.pk])).status_code, 200)
+        response = self.client.post(reverse('posts:crear_post'), {'titulo': ''})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['form'].errors)
+        self.assertEqual(Post.objects.count(), 1)

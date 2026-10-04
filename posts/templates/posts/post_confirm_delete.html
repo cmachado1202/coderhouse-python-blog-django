@@ -1,0 +1,9 @@
+{% extends 'posts/base.html' %}
+{% block title %}Eliminar publicación · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion"><h1>Eliminar publicación</h1></section>
+<section class="tarjeta">
+    <p>¿Querés eliminar “{{ post.titulo }}”? Esta acción elimina la publicación.</p>
+    <form method="post">{% csrf_token %}<div class="acciones"><button class="boton" type="submit">Confirmar eliminación</button><a href="{% url 'posts:detalle_post' post.pk %}">Cancelar</a></div></form>
+</section>
+{% endblock %}
