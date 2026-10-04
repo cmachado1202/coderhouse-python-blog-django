@@ -1,0 +1,16 @@
+{% extends 'posts/base.html' %}
+{% block title %}Inicio · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion">
+    <p class="etiqueta">Python · Django · Desarrollo web</p>
+    <h1>Un espacio para aprender y compartir.</h1>
+    <p class="bajada">Bienvenidos a mi blog. Acá voy a reunir notas, ideas y experiencias mientras aprendo a desarrollar aplicaciones con Python y Django.</p>
+    <a class="boton" href="{% url 'posts:acerca' %}">Conocé el proyecto <span aria-hidden="true">→</span></a>
+</section>
+<section class="tarjeta" aria-labelledby="titulo-proyecto">
+    <p class="etiqueta">El proyecto</p>
+    <h2 id="titulo-proyecto">Del código a una página web</h2>
+    <p>Este sitio continúa el blog que empezó como una aplicación de consola. Ahora cuenta con páginas HTML, un menú de navegación y estilos propios.</p>
+    <p>El próximo paso será sumar publicaciones y conectar el contenido con una base de datos.</p>
+</section>
+{% endblock %}

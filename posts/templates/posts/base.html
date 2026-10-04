@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Blog de Carolina{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'posts/css/estilos.css' %}">
+</head>
+<body>
+    <header class="cabecera">
+        <div class="contenedor barra">
+            <a class="marca" href="{% url 'posts:inicio' %}">Blog de Carolina<span>Notas de aprendizaje</span></a>
+            <nav aria-label="Navegación principal">
+                <a href="{% url 'posts:inicio' %}"{% if request.resolver_match.url_name == 'inicio' %} aria-current="page"{% endif %}>Inicio</a>
+                <a href="{% url 'posts:acerca' %}"{% if request.resolver_match.url_name == 'acerca' %} aria-current="page"{% endif %}>Acerca de</a>
+            </nav>
+        </div>
+    </header>
+    <main class="contenedor">{% block content %}{% endblock %}</main>
+    <footer class="contenedor pie">Carolina Machado · Blog de aprendizaje · {% now "Y" %}</footer>
+</body>
+</html>

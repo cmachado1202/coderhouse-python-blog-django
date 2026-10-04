@@ -1,0 +1,15 @@
+{% extends 'posts/base.html' %}
+{% block title %}Acerca de · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion">
+    <p class="etiqueta">Acerca de</p>
+    <h1>Hola, soy Carolina.</h1>
+    <p class="bajada">Soy Carolina Machado y estoy aprendiendo Python y desarrollo web con Django. Me interesa transformar lo que aprendo en proyectos prácticos y seguir mejorándolos paso a paso.</p>
+</section>
+<section class="tarjeta" aria-labelledby="titulo-proposito">
+    <h2 id="titulo-proposito">¿Para qué existe este blog?</h2>
+    <p>Quiero usar este espacio para organizar apuntes, compartir experiencias y registrar mi recorrido de aprendizaje.</p>
+    <p>La primera versión permite recorrer las páginas de inicio y presentación. A medida que avance el proyecto, voy a incorporar publicaciones y nuevas herramientas para gestionar el contenido.</p>
+    <a class="enlace" href="{% url 'posts:inicio' %}">Volver al inicio <span aria-hidden="true">→</span></a>
+</section>
+{% endblock %}
