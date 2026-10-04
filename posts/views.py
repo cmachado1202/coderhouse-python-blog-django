@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Post
 from .forms import PostForm
+from django.contrib.auth.decorators import login_required
 
 def inicio(request):
     return lista_posts(request)
@@ -16,10 +17,12 @@ def lista_posts(request):
 
 
 def detalle_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    disponibles = Post.objects.all() if request.user.is_authenticated else Post.objects.filter(estado='publicado')
+    post = get_object_or_404(disponibles, pk=pk)
     return render(request, 'posts/post_detail.html', {'post': post})
 
 
+@login_required
 def crear_post(request):
     form = PostForm(request.POST or None, request.FILES or None)
     if request.method == 'POST' and form.is_valid():
@@ -28,6 +31,7 @@ def crear_post(request):
     return render(request, 'posts/post_form.html', {'form': form, 'titulo_pagina': 'Crear publicación'})
 
 
+@login_required
 def editar_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     form = PostForm(request.POST or None, request.FILES or None, instance=post)
@@ -37,6 +41,7 @@ def editar_post(request, pk):
     return render(request, 'posts/post_form.html', {'form': form, 'titulo_pagina': 'Editar publicación'})
 
 
+@login_required
 def eliminar_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':

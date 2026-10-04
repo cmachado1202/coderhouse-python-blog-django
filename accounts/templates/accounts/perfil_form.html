@@ -1,0 +1,6 @@
+{% extends 'posts/base.html' %}
+{% block title %}Editar perfil · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion"><h1>Editar mi perfil</h1></section>
+<section class="tarjeta"><form method="post" enctype="multipart/form-data">{% csrf_token %}{{ form.as_p }}<div class="acciones"><button class="boton" type="submit">Guardar perfil</button><a href="{% url 'accounts:perfil' %}">Cancelar</a></div></form></section>
+{% endblock %}

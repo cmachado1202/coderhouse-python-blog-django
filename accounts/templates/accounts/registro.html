@@ -1,0 +1,6 @@
+{% extends 'posts/base.html' %}
+{% block title %}Registro · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion"><h1>Crear una cuenta</h1></section>
+<section class="tarjeta"><form method="post">{% csrf_token %}{{ form.as_p }}<button class="boton" type="submit">Registrarme</button></form><p>Después del registro podés iniciar sesión y completar tu perfil.</p></section>
+{% endblock %}

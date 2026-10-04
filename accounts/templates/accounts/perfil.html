@@ -1,0 +1,12 @@
+{% extends 'posts/base.html' %}
+{% block title %}Mi perfil · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion"><p class="etiqueta">Mi perfil</p><h1>Hola, {{ user.username }}.</h1></section>
+<section class="tarjeta">
+    {% if perfil.avatar %}<img class="avatar" src="{{ perfil.avatar.url }}" alt="Avatar de {{ user.username }}">{% endif %}
+    {% if user.get_full_name %}<p>{{ user.get_full_name }}</p>{% endif %}
+    {% if user.email %}<p>{{ user.email }}</p>{% endif %}
+    {% if perfil.biografia %}{{ perfil.biografia|linebreaks }}{% else %}<p>Podés agregar una biografía y una imagen a tu perfil.</p>{% endif %}
+    <a class="boton" href="{% url 'accounts:editar_perfil' %}">Editar perfil</a>
+</section>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'posts/base.html' %}
+{% block title %}Iniciar sesión · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion"><h1>Iniciar sesión</h1></section>
+<section class="tarjeta"><form method="post">{% csrf_token %}{{ form.as_p }}<input type="hidden" name="next" value="{{ next }}"><button class="boton" type="submit">Ingresar</button></form><p>¿Todavía no tenés una cuenta? <a href="{% url 'accounts:registro' %}">Registrate</a>.</p></section>
+{% endblock %}

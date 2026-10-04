@@ -38,6 +38,8 @@ class PublicacionesTests(TestCase):
 
 class CrudTests(TestCase):
     def setUp(self):
+        usuario = get_user_model().objects.create_user(username='autor_prueba', password='clave-temporal-prueba')
+        self.client.force_login(usuario)
         self.media = tempfile.TemporaryDirectory()
         self.override = override_settings(MEDIA_ROOT=self.media.name)
         self.override.enable()
