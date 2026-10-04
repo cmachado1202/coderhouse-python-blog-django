@@ -1,0 +1,20 @@
+{% extends 'posts/base.html' %}
+{% block title %}Publicaciones · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion">
+    <p class="etiqueta">Notas de aprendizaje</p>
+    <h1>Publicaciones del blog</h1>
+    <p class="bajada">Ideas y experiencias sobre Python y desarrollo web.</p>
+</section>
+<section class="publicaciones" aria-label="Publicaciones">
+{% for post in posts %}
+    <article class="tarjeta">
+        <p class="etiqueta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y" }}</p>
+        <h2>{{ post.titulo }}</h2>
+        {{ post.contenido|linebreaks }}
+    </article>
+{% empty %}
+    <div class="tarjeta"><h2>Todavía no hay publicaciones</h2><p>Los nuevos artículos aparecerán acá cuando estén publicados.</p></div>
+{% endfor %}
+</section>
+{% endblock %}

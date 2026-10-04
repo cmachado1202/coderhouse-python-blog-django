@@ -37,7 +37,13 @@ Abrir `http://127.0.0.1:8000/`. El idioma está configurado como español de Arg
 - `posts/templates/posts/inicio.html` y `acerca.html`: heredan la plantilla base.
 - `posts/static/posts/css/estilos.css`: estilos y adaptación a pantallas pequeñas.
 
-Esta etapa usa contenido estático; todavía no incorpora modelos ni formularios de publicaciones.
+## Publicaciones y administración (preentrega 9)
+
+El modelo `Post` guarda título, contenido, autor, fecha automática y estado (borrador, publicado o archivado). La página de inicio y `/posts/` consultan el ORM y muestran únicamente publicaciones con estado `publicado`, de más reciente a más antigua.
+
+Después de ejecutar las migraciones, crear un administrador local con `python manage.py createsuperuser`. Iniciar el servidor, entrar a `http://127.0.0.1:8000/admin/` y agregar al menos tres posts desde **Posts → Añadir**: uno publicado, uno borrador y uno archivado. Solo el publicado aparece en el listado público. Las columnas del admin muestran título, autor, estado y fecha. La contraseña se elige localmente y no se incluye en el repositorio.
+
+SQLite se reconstruye con las migraciones incluidas. Ejecutar `python manage.py test` para comprobar el listado público y la carga de tres publicaciones mediante el panel admin en una base de prueba temporal.
 
 ## Comprobación
 
