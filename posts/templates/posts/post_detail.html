@@ -8,8 +8,10 @@
     {{ post.contenido|linebreaks }}
     <div class="acciones">
         <a href="{% url 'posts:lista_posts' %}">Volver al listado</a>
+        {% if puede_editar %}
         <a href="{% url 'posts:editar_post' post.pk %}">Editar</a>
         <a href="{% url 'posts:borrar_post' post.pk %}">Eliminar</a>
+        {% endif %}
     </div>
 </article>
 {% endblock %}

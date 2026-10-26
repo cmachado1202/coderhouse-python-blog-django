@@ -52,8 +52,6 @@ Entrá a `http://127.0.0.1:8000/admin/` con ese usuario. En **Posts → Añadir*
 
 Los usuarios y la base SQLite se crean en cada equipo; no se publican contraseñas ni `db.sqlite3`.
 
-## Comprobación
-
 ## Preentrega 10: CRUD e imágenes
 
 El menú del listado permite crear publicaciones; cada título abre su detalle, con enlaces para editar o eliminar. El borrado muestra una confirmación y solo elimina mediante POST con CSRF. `PostForm` es un `ModelForm` con título, contenido, autor, estado e imagen opcional.
@@ -62,6 +60,23 @@ El menú del listado permite crear publicaciones; cada título abre su detalle, 
 
 Para probar: crear un post con imagen, abrir su detalle, editar el título y reemplazar la imagen, y eliminarlo con confirmación. Repetir sin imagen para comprobar que es opcional.
 
-## Validación
+## Preentrega 11: usuarios y perfiles
+
+`accounts` agrega registro (`UserCreationForm` personalizado), login y logout nativos de Django. El logout usa **POST con CSRF**, nunca un enlace GET. `Perfil` tiene `OneToOneField` con el usuario, biografía, avatar opcional y enlace web. Una señal `post_save` crea perfiles también para usuarios del admin; el registro y las vistas usan `get_or_create` sin duplicar perfiles.
+
+- `/accounts/registro/`: crear una cuenta local; después, iniciar sesión.
+- `/accounts/login/`: ingresar. Si venías de una ruta protegida, vuelve a esa ruta.
+- `/accounts/perfil/` y `/accounts/perfil/editar/`: ver y editar solo el propio perfil.
+- `/post/nuevo/`, `/post/<id>/editar/`, `/post/<id>/borrar/`: requieren autenticación. Editar y borrar requieren además ser propietario o staff.
+- `/mis-posts/`: permite al autor volver a sus borradores y archivados.
+- Listado y detalle de publicaciones publicadas: públicos. El contenido de borradores queda disponible únicamente para su propietario o staff.
+
+Los posts del admin pueden gestionarse por staff. `creado_por` permite relacionar cada nuevo post con su propietario sin perder el campo de autor de los checkpoints previos. Los perfiles de usuarios anteriores se crean al abrir su perfil. Los avatares usan `media/avatares/` con la configuración de media y Pillow del checkpoint 10.
+
+Aplicá `python manage.py migrate` después de actualizar el repositorio. Para probar usuarios: registrar una cuenta, iniciar sesión, editar la biografía, cargar un avatar, crear un post, cerrar sesión e intentar entrar directamente a `/post/nuevo/`; debe redirigir al login. No se incluye ninguna cuenta o contraseña real en el repositorio.
+
+## Comprobación final
+
+`python manage.py cargar_demo` carga tres notas educativas ficticias (dos publicadas y un borrador) para explorar el proyecto. Es opcional y se puede repetir sin duplicarlas. No reemplaza el ejercicio de cargar posts desde el admin. La prueba de integración del admin verifica además la creación de tres posts usando sus formularios.
 
 Ejecutar `python manage.py check` y `python manage.py test`. Las pruebas verifican la carga de tres posts mediante los formularios del admin y que el listado público obtiene datos del ORM sin exponer borradores. Para recorrer el sitio, iniciar `python manage.py runserver`. El CSS se sirve desde `/static/posts/css/estilos.css`.

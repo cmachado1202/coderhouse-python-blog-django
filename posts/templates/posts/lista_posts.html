@@ -3,13 +3,13 @@
 {% block content %}
 <section class="presentacion">
     <p class="etiqueta">Python · Django · Desarrollo web</p>
-    <h1>Notas de aprendizaje.</h1>
+    <h1>{% if mis_publicaciones %}Mis publicaciones.{% else %}Notas de aprendizaje.{% endif %}</h1>
     <p class="bajada">Ideas y experiencias de mi recorrido con Python y Django.</p>
-    <a class="boton" href="{% url 'posts:crear_post' %}">Crear publicación</a>
+    {% if user.is_authenticated %}<a class="boton" href="{% url 'posts:crear_post' %}">Crear publicación</a>{% endif %}
 </section>
 {% for post in posts %}
 <article class="tarjeta">
-    <p class="etiqueta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y H:i" }}</p>
+    <p class="etiqueta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y H:i" }}{% if mis_publicaciones %} · {{ post.get_estado_display }}{% endif %}</p>
     <h2><a href="{% url 'posts:detalle_post' post.pk %}">{{ post.titulo }}</a></h2>
     {% if post.imagen %}<img class="imagen-post" src="{{ post.imagen.url }}" alt="Imagen de {{ post.titulo }}">{% endif %}
     <p>{{ post.contenido|truncatewords:45 }}</p>

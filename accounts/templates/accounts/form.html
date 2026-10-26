@@ -1,0 +1,10 @@
+{% extends 'posts/base.html' %}
+{% block title %}{{ titulo_pagina }} · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion"><h1>{{ titulo_pagina }}</h1></section>
+<form class="tarjeta formulario" method="post" enctype="multipart/form-data">
+    {% csrf_token %}{{ form.as_p }}
+    <button class="boton" type="submit">{{ accion }}</button>
+    <a href="{% url 'posts:inicio' %}">Volver al blog</a>
+</form>
+{% endblock %}

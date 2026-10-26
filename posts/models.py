@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Post(models.Model):
     ESTADOS = [("borrador", "Borrador"), ("publicado", "Publicado"), ("archivado", "Archivado")]
@@ -9,6 +10,7 @@ class Post(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=20, choices=ESTADOS, default="borrador")
     imagen = models.ImageField(upload_to="posts/", null=True, blank=True)
+    creado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="publicaciones")
 
     class Meta:
         ordering = ["-fecha_creacion"]

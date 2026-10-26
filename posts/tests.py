@@ -38,6 +38,10 @@ def imagen_prueba(nombre="imagen.png"):
 
 
 class CrudTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user("autora", password="solo-test")
+        self.client.force_login(self.usuario)
+
     def test_crear_editar_imagen_detalle_y_borrar_con_confirmacion(self):
         with TemporaryDirectory() as media, override_settings(MEDIA_ROOT=media):
             datos = {"titulo": "Post con imagen", "contenido": "Texto completo", "autor": "Demo", "estado": "publicado"}
