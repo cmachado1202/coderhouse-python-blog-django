@@ -1,6 +1,6 @@
 # Blog Django
 
-Blog web de Carolina Machado desarrollado con Django. El proyecto se llama `blog_project` y la aplicación principal se llama `posts`. La preentrega 8 continúa la base aprobada en la preentrega 7: suma páginas de inicio y acerca de, templates con herencia y CSS propio.
+Blog web de Carolina Machado desarrollado con Django. El proyecto se llama `blog_project` y la aplicación principal se llama `posts`. Continúa el mismo repositorio de las preentregas 7 y 8, con herencia de templates y CSS propio.
 
 ## Instalación
 
@@ -29,7 +29,7 @@ Abrir `http://127.0.0.1:8000/`. El idioma está configurado como español de Arg
 
 ## Páginas y organización
 
-- `/`: bienvenida y descripción del blog.
+- `/` y `/posts/`: listado de publicaciones reales, filtradas por estado publicado y ordenadas de más reciente a más antigua.
 - `/acerca/`: presentación de la autora y propósito del sitio.
 - `posts/urls.py`: rutas de la app, incluidas desde `blog_project/urls.py`.
 - `posts/views.py`: vistas basadas en funciones que usan `render()`.
@@ -37,8 +37,21 @@ Abrir `http://127.0.0.1:8000/`. El idioma está configurado como español de Arg
 - `posts/templates/posts/inicio.html` y `acerca.html`: heredan la plantilla base.
 - `posts/static/posts/css/estilos.css`: estilos y adaptación a pantallas pequeñas.
 
-Esta etapa usa contenido estático; todavía no incorpora modelos ni formularios de publicaciones.
+## Preentrega 9: modelos, ORM y admin
+
+`posts/models.py` define `Post` con título, contenido, autor, fecha automática y estado (borrador, publicado o archivado). `__str__` devuelve el título. La migración inicial está incluida en `posts/migrations/`.
+
+Después de `python manage.py migrate`, creá tu propio administrador local:
+
+```bash
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Entrá a `http://127.0.0.1:8000/admin/` con ese usuario. En **Posts → Añadir**, cargá al menos tres publicaciones con distintos estados. `PostAdmin` muestra título, autor, estado y fecha, con búsqueda y filtros. Los borradores y archivados quedan fuera del listado público. La vista `lista_posts` consulta el ORM y el template `lista_posts.html` recorre `{% for post in posts %}`.
+
+Los usuarios y la base SQLite se crean en cada equipo; no se publican contraseñas ni `db.sqlite3`.
 
 ## Comprobación
 
-Ejecutar `python manage.py check`, iniciar `python manage.py runserver` y recorrer ambas páginas desde el menú. En las herramientas del navegador, verificar que `/static/posts/css/estilos.css` responda con HTTP 200. Las rutas y el CSS deben funcionar en una instalación nueva siguiendo los pasos anteriores.
+Ejecutar `python manage.py check` y `python manage.py test`. Las pruebas verifican la carga de tres posts mediante los formularios del admin y que el listado público obtiene datos del ORM sin exponer borradores. Para recorrer el sitio, iniciar `python manage.py runserver`. El CSS se sirve desde `/static/posts/css/estilos.css`.

@@ -1,0 +1,18 @@
+{% extends 'posts/base.html' %}
+{% block title %}Publicaciones · Blog de Carolina{% endblock %}
+{% block content %}
+<section class="presentacion">
+    <p class="etiqueta">Python · Django · Desarrollo web</p>
+    <h1>Notas de aprendizaje.</h1>
+    <p class="bajada">Ideas y experiencias de mi recorrido con Python y Django.</p>
+</section>
+{% for post in posts %}
+<article class="tarjeta">
+    <p class="etiqueta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y H:i" }}</p>
+    <h2>{{ post.titulo }}</h2>
+    {{ post.contenido|linebreaks }}
+</article>
+{% empty %}
+<p class="tarjeta">Todavía no hay publicaciones. Volvé pronto para leer las novedades.</p>
+{% endfor %}
+{% endblock %}
