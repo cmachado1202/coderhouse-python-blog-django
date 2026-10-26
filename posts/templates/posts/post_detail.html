@@ -1,0 +1,15 @@
+{% extends 'posts/base.html' %}
+{% block title %}{{ post.titulo }} · Blog de Carolina{% endblock %}
+{% block content %}
+<article class="presentacion">
+    <p class="etiqueta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y H:i" }} · {{ post.get_estado_display }}</p>
+    <h1>{{ post.titulo }}</h1>
+    {% if post.imagen %}<img class="imagen-post" src="{{ post.imagen.url }}" alt="Imagen de {{ post.titulo }}">{% endif %}
+    {{ post.contenido|linebreaks }}
+    <div class="acciones">
+        <a href="{% url 'posts:lista_posts' %}">Volver al listado</a>
+        <a href="{% url 'posts:editar_post' post.pk %}">Editar</a>
+        <a href="{% url 'posts:borrar_post' post.pk %}">Eliminar</a>
+    </div>
+</article>
+{% endblock %}

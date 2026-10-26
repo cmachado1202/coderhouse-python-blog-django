@@ -54,4 +54,14 @@ Los usuarios y la base SQLite se crean en cada equipo; no se publican contraseñ
 
 ## Comprobación
 
+## Preentrega 10: CRUD e imágenes
+
+El menú del listado permite crear publicaciones; cada título abre su detalle, con enlaces para editar o eliminar. El borrado muestra una confirmación y solo elimina mediante POST con CSRF. `PostForm` es un `ModelForm` con título, contenido, autor, estado e imagen opcional.
+
+`ImageField(upload_to='posts/', null=True, blank=True)` guarda las imágenes bajo `media/posts/`. Pillow valida los archivos; el formulario usa `enctype="multipart/form-data"` y las vistas reciben `request.FILES`. `MEDIA_URL='/media/'` y `MEDIA_ROOT` están configurados y las rutas sirven archivos solo en desarrollo (`DEBUG`). Los archivos media locales no se suben a GitHub.
+
+Para probar: crear un post con imagen, abrir su detalle, editar el título y reemplazar la imagen, y eliminarlo con confirmación. Repetir sin imagen para comprobar que es opcional.
+
+## Validación
+
 Ejecutar `python manage.py check` y `python manage.py test`. Las pruebas verifican la carga de tres posts mediante los formularios del admin y que el listado público obtiene datos del ORM sin exponer borradores. Para recorrer el sitio, iniciar `python manage.py runserver`. El CSS se sirve desde `/static/posts/css/estilos.css`.

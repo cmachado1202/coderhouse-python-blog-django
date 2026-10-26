@@ -5,12 +5,15 @@
     <p class="etiqueta">Python · Django · Desarrollo web</p>
     <h1>Notas de aprendizaje.</h1>
     <p class="bajada">Ideas y experiencias de mi recorrido con Python y Django.</p>
+    <a class="boton" href="{% url 'posts:crear_post' %}">Crear publicación</a>
 </section>
 {% for post in posts %}
 <article class="tarjeta">
     <p class="etiqueta">{{ post.autor }} · {{ post.fecha_creacion|date:"d/m/Y H:i" }}</p>
-    <h2>{{ post.titulo }}</h2>
-    {{ post.contenido|linebreaks }}
+    <h2><a href="{% url 'posts:detalle_post' post.pk %}">{{ post.titulo }}</a></h2>
+    {% if post.imagen %}<img class="imagen-post" src="{{ post.imagen.url }}" alt="Imagen de {{ post.titulo }}">{% endif %}
+    <p>{{ post.contenido|truncatewords:45 }}</p>
+    <a href="{% url 'posts:detalle_post' post.pk %}">Leer publicación</a>
 </article>
 {% empty %}
 <p class="tarjeta">Todavía no hay publicaciones. Volvé pronto para leer las novedades.</p>
